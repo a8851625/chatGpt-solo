@@ -1,9 +1,11 @@
 package com.tencent.wxcloudrun.controller;
 
+import cn.hutool.json.JSON;
 import com.tencent.wxcloudrun.ChatGPTClient;
 import com.tencent.wxcloudrun.dto.TextMessageVO;
 import com.tencent.wxcloudrun.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,17 +34,19 @@ public class ChatController {
     public String processRequest(HttpServletRequest request) {
         String respMessage = null;
         try {
-            // xml请求解析
-            Map<String, String> requestMap = MessageUtil.parseXml(request);
+
+            //获取消息流,并解析xml
+            WxMpXmlMessage message = WxMpXmlMessage.fromXml(request.getInputStream());
+            log.info(message.toString());
 
             // 发送方帐号（open_id）
-            String fromUserName = requestMap.get("FromUserName");
+            String fromUserName = message.getFromUser();
             // 公众帐号
-            String toUserName = requestMap.get("ToUserName");
+            String toUserName = message.getToUser();
             // 消息类型
-            String msgType = requestMap.get("MsgType");
+            String msgType = message.getMsgType();
 
-            String content = requestMap.get("Content");
+            String content = message.getContent();
 
             // 回复文本消息
             TextMessageVO textMessage = new TextMessageVO();
@@ -56,7 +60,7 @@ public class ChatController {
 
             //chatgpt处理
             ChatGPTClient client = new ChatGPTClient("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");
-            textMessage.setContent(client.askQuestion("Content"));
+            textMessage.setContent(client.askQuestion(content));
             respMessage = MessageUtil.textMessageToXml(textMessage);
         } catch (Exception e) {
             e.printStackTrace();
