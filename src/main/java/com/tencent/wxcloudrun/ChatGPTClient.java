@@ -1,13 +1,12 @@
-package com.unfbx.chatgpt;
+package com.tencent.wxcloudrun;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.http.*;
 import cn.hutool.json.JSONUtil;
-import com.unfbx.chatgpt.config.ChatGPTUrl;
-import com.unfbx.chatgpt.entity.Answer;
-import com.unfbx.chatgpt.entity.Question;
-import com.unfbx.chatgpt.exception.BaseException;
-import com.unfbx.chatgpt.exception.CommonError;
+import com.tencent.wxcloudrun.config.ChatGPTUrl;
+import com.tencent.wxcloudrun.entity.Answer;
+import com.tencent.wxcloudrun.exception.BaseException;
+import com.tencent.wxcloudrun.exception.CommonError;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,12 +32,9 @@ public class ChatGPTClient {
     }
 
     public String askQuestion(String question) {
-        Question q = Question.builder()
-                .prompt(question)
-                .build();
         HttpResponse response = HttpRequest
                 .post(ChatGPTUrl.COMPLETIONS.getUrl())
-                .body(JSONUtil.toJsonStr(q))
+                .body(JSONUtil.toJsonStr(question))
                 .header(Header.AUTHORIZATION.getValue(), "Bearer " + this.apiKey)
                 .header(Header.CONTENT_TYPE.getValue(), ContentType.JSON.getValue())
                 .execute();

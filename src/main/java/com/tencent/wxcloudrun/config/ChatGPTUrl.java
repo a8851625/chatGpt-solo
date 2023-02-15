@@ -1,4 +1,4 @@
-package com.unfbx.chatgpt.config;
+package com.tencent.wxcloudrun.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

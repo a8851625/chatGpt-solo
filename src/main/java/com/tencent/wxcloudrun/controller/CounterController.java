@@ -1,5 +1,10 @@
 package com.tencent.wxcloudrun.controller;
 
+import cn.hutool.core.util.XmlUtil;
+import cn.hutool.http.HttpResponse;
+import com.tencent.wxcloudrun.ChatGPTClient;
+import com.tencent.wxcloudrun.dto.QuestionRequest;
+import com.tencent.wxcloudrun.dto.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tencent.wxcloudrun.config.ApiResponse;
@@ -12,9 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * counter控制器
@@ -34,6 +45,7 @@ public class CounterController {
 
   /**
    * 获取当前计数
+   *
    * @return API response json
    */
   @GetMapping(value = "/api/count")
@@ -51,6 +63,7 @@ public class CounterController {
 
   /**
    * 更新计数，自增或者清零
+   *
    * @param request {@link CounterRequest}
    * @return API response json
    */
@@ -79,5 +92,11 @@ public class CounterController {
       return ApiResponse.error("参数action错误");
     }
   }
-  
+
+
+
+
+
+
+
 }

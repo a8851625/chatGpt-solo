@@ -1,4 +1,4 @@
-package com.unfbx.chatgpt.entity;
+package com.tencent.wxcloudrun.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

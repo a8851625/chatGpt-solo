@@ -1,4 +1,4 @@
-package com.unfbx.chatgpt.exception;
+package com.tencent.wxcloudrun.exception;
 /**
  * 描述：
  *
