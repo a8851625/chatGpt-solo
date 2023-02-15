@@ -1,10 +1,5 @@
 package com.tencent.wxcloudrun.controller;
 
-import cn.hutool.core.util.XmlUtil;
-import cn.hutool.http.HttpResponse;
-import com.tencent.wxcloudrun.ChatGPTClient;
-import com.tencent.wxcloudrun.dto.QuestionRequest;
-import com.tencent.wxcloudrun.dto.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tencent.wxcloudrun.config.ApiResponse;
