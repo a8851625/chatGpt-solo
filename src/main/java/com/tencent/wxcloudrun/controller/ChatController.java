@@ -41,7 +41,7 @@ public class ChatController {
 
             String content = message.getContent();
 
-            String key= "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";
+            String key= "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";
             //chatgpt处理
             ChatGPTClient client = new ChatGPTClient(key);
             return MessageUtil.textMessageToXml(buildResponse(message,client.askQuestion(content)));
