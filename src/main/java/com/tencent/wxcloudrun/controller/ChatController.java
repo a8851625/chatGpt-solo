@@ -18,6 +18,8 @@ import java.util.Map;
 @RestController
 public class ChatController {
 
+    private WxMpXmlMessage message;
+
     /**
      * 解析请求消息，post请求
      */
@@ -32,39 +34,37 @@ public class ChatController {
     }
 
     public String processRequest(HttpServletRequest request) {
-        String respMessage = null;
         try {
 
             //获取消息流,并解析xml
-            WxMpXmlMessage message = WxMpXmlMessage.fromXml(request.getInputStream());
+            message = WxMpXmlMessage.fromXml(request.getInputStream());
             log.info(message.toString());
-
-            // 发送方帐号（open_id）
-            String fromUserName = message.getFromUser();
-            // 公众帐号
-            String toUserName = message.getToUser();
-            // 消息类型
-            String msgType = message.getMsgType();
 
             String content = message.getContent();
 
-            // 回复文本消息
-            TextMessageVO textMessage = new TextMessageVO();
-            textMessage.setToUserName(fromUserName);
-            textMessage.setFromUserName(toUserName);
-            textMessage.setCreateTime(System.currentTimeMillis());
-            textMessage.setMsgType("text");
-
+            String key= "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";
+            if(content.contains("-")){
+                key = content;
+            }
 
             //chatgpt处理
-            ChatGPTClient client = new ChatGPTClient("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");
-            textMessage.setContent(client.askQuestion(content));
-            respMessage = MessageUtil.textMessageToXml(textMessage);
+            ChatGPTClient client = new ChatGPTClient(key);
+            return MessageUtil.textMessageToXml(buildResponse(message,client.askQuestion(content)));
         } catch (Exception e) {
             log.error("处理错误了",e);
-            return "请求处理异常，请稍候重试！";
         }
-        return respMessage;
+        return MessageUtil.textMessageToXml(buildResponse(message,"西八"));
+    }
+
+    private TextMessageVO buildResponse(WxMpXmlMessage message,String returnContent){
+        TextMessageVO textMessage = new TextMessageVO();
+        textMessage.setToUserName(message.getFromUser());
+        textMessage.setFromUserName(message.getToUser());
+        textMessage.setCreateTime(System.currentTimeMillis());
+        textMessage.setMsgType("text");
+        textMessage.setContent(returnContent);
+        return textMessage;
+
     }
 
 }
