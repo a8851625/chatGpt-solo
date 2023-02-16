@@ -13,7 +13,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ChatGPTUrl {
 
-    COMPLETIONS("https://api.openai.com/v1/completions"),
+//    COMPLETIONS("https://api.openai.com/v1/completions"),
+    COMPLETIONS("https://xiaohehe.online:8080")
     ;
 
     private String url;
