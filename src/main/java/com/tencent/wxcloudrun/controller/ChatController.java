@@ -55,16 +55,14 @@ public class ChatController {
             textMessage.setCreateTime(System.currentTimeMillis());
             textMessage.setMsgType("text");
 
-            // 默认返回的文本消息内容
-            String respContent = "请求处理异常，请稍候重试！";
 
             //chatgpt处理
-            ChatGPTClient client = new ChatGPTClient("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");
+            ChatGPTClient client = new ChatGPTClient("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");
             textMessage.setContent(client.askQuestion(content));
             respMessage = MessageUtil.textMessageToXml(textMessage);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("处理错误了",e);
+            return "请求处理异常，请稍候重试！";
         }
         return respMessage;
     }
